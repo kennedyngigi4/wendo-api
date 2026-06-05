@@ -16,9 +16,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = [
-    "api.wendohealth.com", "https://api.wendohealth.com", "78.159.110.129"
-]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 
 # Application definition
@@ -111,10 +109,7 @@ SIMPLE_JWT = {
 }
 
 # CORS 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://wendohealth.com",
-]
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
