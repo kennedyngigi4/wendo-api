@@ -4,8 +4,8 @@ from django.utils.text import slugify
 from tinymce.models import HTMLField
 
 from apps.accounts.models.models import User
-from apps.providers.models.models import *
-from apps.services.models.models import *
+from apps.providers.models.models import ProviderBranch
+from apps.services.models.models import Specialty
 # Create your models here.
 
 def professional_profile_upload_path(instance, filename):
