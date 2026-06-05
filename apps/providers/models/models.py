@@ -4,7 +4,7 @@ from django.utils.text import slugify
 from tinymce.models import HTMLField
 
 from apps.accounts.models.models import User
-from apps.accounts.models.organization_models import *
+from apps.accounts.models.organization_models import Organization
 from apps.services.models.models import Service
 
 # Create your models here.

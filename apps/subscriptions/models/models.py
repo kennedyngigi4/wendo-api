@@ -6,8 +6,8 @@ from django.utils.text import slugify
 
 
 from apps.accounts.models.models import User
-from apps.providers.models.models import *
-from apps.professionals.models.models import *
+from apps.providers.models.models import ProviderBranch, Provider
+from apps.professionals.models.models import Professional
 # Create your models here.
 
 

@@ -3,9 +3,9 @@ from django.db import models
 from django.utils import timezone
 
 from apps.accounts.models.models import User
-from apps.professionals.models.models import *
-from apps.providers.models.models import *
-
+from apps.professionals.models.models import Professional
+from apps.providers.models.models import Provider, ProviderBranch
+from apps.services.models.models import ServiceOffering
 # Create your models here.
 
 class Booking(models.Model):

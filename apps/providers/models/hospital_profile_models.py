@@ -7,7 +7,7 @@ from tinymce.models import HTMLField
 from rest_framework.exceptions import ValidationError
 
 from apps.accounts.models.models import User
-from apps.providers.models.models import *
+from apps.providers.models.models import Provider, ProviderBranch
 from apps.services.models.models import Specialty
 
 
