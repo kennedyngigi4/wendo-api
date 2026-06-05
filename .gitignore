@@ -1,0 +1,9 @@
+
+/env
+/media
+/web
+
+.env
+dump.rdb
+
+
