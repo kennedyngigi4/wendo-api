@@ -23,13 +23,5 @@ class NewsletterSubscriptionView(APIView):
             }, status=status.HTTP_201_CREATED)
         
 
-        
-        field, errors = next(iter(serializer.errors.items()))
-        first_error = errors[0]
-        return Response({
-                "success": False,
-                "errors": str(first_error).capitalize()
-            }, status=status.HTTP_400_BAD_REQUEST)
-
 
 

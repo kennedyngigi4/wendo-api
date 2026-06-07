@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 
+from apps._core_utils.services.email_services import EmailService
 from apps.accounts.models.models import User
 from apps.accounts.services.account_services import AccountService
 from apps.accounts.serializers.serializers import *
@@ -16,11 +17,12 @@ from apps.accounts.serializers.serializers import *
 class RegisterView(APIView):
 
     def post(self, request):
-        print(request.data)
+        
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print("Valid ......")
-        serializer.save()
+        
+        user = serializer.save()
+        EmailService.send_welcome_email(user)
 
         return Response({
             "success": True,
