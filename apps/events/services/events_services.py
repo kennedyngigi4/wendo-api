@@ -17,3 +17,14 @@ class EventsService:
 
 
 
+    @staticmethod
+    def all_events(request):
+        queryset = Event.objects.filter(
+            end_datetime__gte=timezone.now()
+        ).order_by(
+            "start_datetime"
+        )
+
+
+        serializer = EventHomeSerializer(queryset, many=True, context={"request": request})
+        return serializer.data

@@ -23,6 +23,10 @@ urlpatterns += [
     path("v1/providers/public/", include("apps.providers.urls.public_urls")),
 
     path( "v1/services/", include("apps.services.urls.urls")),
+
+    path( "v1/events/", include("apps.events.urls.urls")),
+
+    path("v1/notifications/", include("apps.notifications.urls")),
 ]
 
 

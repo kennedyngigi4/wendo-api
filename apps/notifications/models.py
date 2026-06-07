@@ -32,3 +32,13 @@ class Notification(models.Model):
         return f"{self.user.fullname} - {self.title}"
 
 
+
+class NewsletterSubscriber(models.Model):
+    
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4, unique=True)
+    email = models.EmailField(unique=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.email}"
+
