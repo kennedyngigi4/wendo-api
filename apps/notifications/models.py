@@ -37,6 +37,8 @@ class NewsletterSubscriber(models.Model):
     
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4, unique=True)
     email = models.EmailField(unique=True)
+
+    status = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
