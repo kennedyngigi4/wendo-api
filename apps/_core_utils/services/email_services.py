@@ -8,31 +8,36 @@ class EmailService:
     @staticmethod
     def send_welcome_email(user):
 
-        subject = "Welcome to Wendo Health"
+        try:
+            subject = "Welcome to Wendo Health"
+            html_content = render_to_string(
+                "notifications/welcome.html",
+                {
+                    "fullname": user.fullname,
+                    "unsubscribe_url": "https://wendohealth.com",
+                }
+            )
 
-        html_content = render_to_string(
-            "notifications/welcome.html",
-            {
-                "fullname": user.fullname,
-                "unsubscribe_url": "https://wendohealth.com",
-            }
-        )
+            text_content = f"""
+            Hi {user.fullname},
 
-        text_content = f"""
-        Hi {user.fullname},
+            Welcome to Wendo Health.
+            """
 
-        Welcome to Wendo Health.
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email]
+            )
 
-        Thank you for joining our healthcare community.
-        """
+            email.attach_alternative(html_content, "text/html")
 
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=text_content,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[user.email]
-        )
+            email.send(fail_silently=False)
 
-        email.attach_alternative(html_content, "text/html")
+            print("WELCOME EMAIL SENT")
 
-        email.send(fail_silently=False)
+        except Exception as e:
+            print("EMAIL ERROR:", str(e))
+
+
