@@ -20,25 +20,20 @@ class RegisterView(APIView):
     def post(self, request):
         
         serializer = RegisterSerializer(data=request.data)
-        if not serializer.is_valid():
-            print(serializer.errors)
-            return Response({
-                "success": False,
-                "errors": serializer.errors
-            }, status=400) 
         
-        user = serializer.save()
+        if serializer.is_valid():
+            user = serializer.save()
 
-        try:
-            EmailService.send_welcome_email(user)
-        except Exception as e:
-            print("EMAIL ERROR:", str(e))
-            traceback.print_exc()
+            try:
+                EmailService.send_welcome_email(user)
+            except Exception as e:
+                print("EMAIL ERROR:", str(e))
+                traceback.print_exc()
 
-        return Response({
-            "success": True,
-            "message": "Account created successfully"
-        }, status=status.HTTP_201_CREATED)
+            return Response({
+                "success": True,
+                "message": "Account created successfully"
+            }, status=status.HTTP_201_CREATED)
 
         
 
