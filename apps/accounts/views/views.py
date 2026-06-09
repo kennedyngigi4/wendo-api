@@ -22,7 +22,11 @@ class RegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         
         user = serializer.save()
-        EmailService.send_welcome_email(user)
+        
+        try:
+            EmailService.send_welcome_email(user)
+        except Exception as e:
+            print("EMAIL ERROR:", str(e))
 
         return Response({
             "success": True,
