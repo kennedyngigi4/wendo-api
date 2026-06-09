@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.cache import cache
 
 from rest_framework import status, generics,viewsets
 from rest_framework.views import APIView
@@ -6,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 
+from apps._core_utils.helpers.cache_utils import GlobalCache
 from apps.providers.models.models import Provider, ProviderBranch
 from apps.professionals.models.models import Professional
 from apps.accounts.permissions import IsProvider
@@ -25,8 +27,18 @@ class AllServicesView(APIView):
 
 class AllSpecialtiesView(APIView):
     def get(self, request):
+
+        cache_key = GlobalCache.get_list_public_key("specialties")
+        cached_data = cache.get(cache_key)
+
+        if cached_data is not None:
+            return Response(cached_data)
+
         queryset = Specialty.objects.all().order_by("name")
         serializer = SpecialtyReadSerializer(queryset, many=True)
+
+        cache.set(cache_key, serializer.data, GlobalCache.DEFAULT_TIMEOUT)
+
         return Response(serializer.data)
 
 

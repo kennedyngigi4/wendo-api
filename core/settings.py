@@ -193,3 +193,11 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "Wendo Health <welcome@wendohealth.com>")
 
+
+# send_mail(
+#     "Test Email",
+#     "Testing Wendo setup",
+#     None,
+#     ["kennedyngigi4@gmail.com"],
+#     fail_silently=False
+# )
