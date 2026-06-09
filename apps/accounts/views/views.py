@@ -19,10 +19,12 @@ class RegisterView(APIView):
     def post(self, request):
         
         serializer = RegisterSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid():
+            print(serializer.errors)
+            return 
         
         user = serializer.save()
-        
+
         try:
             EmailService.send_welcome_email(user)
         except Exception as e:
