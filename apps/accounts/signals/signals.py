@@ -11,7 +11,7 @@ from apps.accounts.models.profile_models import PatientProfile, ProviderProfile
 def create_user_profile(sender, instance, created, **kwargs):
 
     if created:
-        print(instance.role)
+        
 
         if instance.role == "patient":
             PatientProfile.objects.create(

@@ -1,3 +1,4 @@
+import traceback
 from django.shortcuts import render
 
 from rest_framework import status, generics
@@ -21,7 +22,10 @@ class RegisterView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if not serializer.is_valid():
             print(serializer.errors)
-            return 
+            return Response({
+                "success": False,
+                "errors": serializer.errors
+            }, status=400) 
         
         user = serializer.save()
 
@@ -29,6 +33,7 @@ class RegisterView(APIView):
             EmailService.send_welcome_email(user)
         except Exception as e:
             print("EMAIL ERROR:", str(e))
+            traceback.print_exc()
 
         return Response({
             "success": True,
