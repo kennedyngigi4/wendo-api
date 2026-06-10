@@ -94,6 +94,12 @@ class AllProvidersViewSet(generics.ListAPIView):
         return queryset
 
     def list(self, request, *args, **kwargs):
+        print("=" * 50)
+        print("REQUEST RECEIVED")
+        print("PATH:", request.path)
+        print("QUERY PARAMS:", request.query_params)
+
+
         today = timezone.localtime(timezone.now()).weekday()
 
         page_number = request.query_params.get("page", 1)
@@ -121,9 +127,13 @@ class AllProvidersViewSet(generics.ListAPIView):
             self.get_queryset()
         )
 
+
+        print("QUERYSET COUNT:", queryset.count())
         page = self.paginate_queryset(queryset)
 
         if page is not None:
+            print("PAGE COUNT:", len(page))
+
             serializer = self.get_serializer(page, many=True)
 
             response = self.get_paginated_response(
@@ -131,7 +141,7 @@ class AllProvidersViewSet(generics.ListAPIView):
             )
 
             # cache.set(cache_key, response.data, timeout=60 * 1)
-
+            print("SERIALIZED COUNT:", len(serializer.data))
             return response
 
         serializer = self.get_serializer(queryset, many=True)
