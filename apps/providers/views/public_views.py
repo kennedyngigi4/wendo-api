@@ -59,7 +59,7 @@ class AllProvidersViewSet(generics.ListAPIView):
                     Value(0),
                     output_field=IntegerField()
                 )
-            )
+            ).order_by("-created_at")
         )
 
         # Route-based provider type
