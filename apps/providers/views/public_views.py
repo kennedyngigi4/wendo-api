@@ -112,10 +112,10 @@ class AllProvidersViewSet(generics.ListAPIView):
         )
         
 
-        cached_data = cache.get(cache_key)
+        # cached_data = cache.get(cache_key)
         
-        if cached_data:
-            return Response(cached_data)
+        # if cached_data:
+        #     return Response(cached_data)
 
         queryset = self.filter_queryset(
             self.get_queryset()
@@ -130,7 +130,7 @@ class AllProvidersViewSet(generics.ListAPIView):
                 serializer.data
             )
 
-            cache.set(cache_key, response.data, timeout=60 * 1)
+            # cache.set(cache_key, response.data, timeout=60 * 1)
 
             return response
 
