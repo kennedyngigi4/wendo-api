@@ -19,11 +19,11 @@ class MainHomeView(APIView):
 
     def get(self, request):
 
-        # cache_key = "homepage_featured"
-        # cached = cache.get(cache_key)
+        cache_key = "homepage_featured"
+        cached = cache.get(cache_key)
 
-        # if cached is not None:
-        #     return Response(cached)
+        if cached is not None:
+            return Response(cached)
         
         data = {
             "providers": ProvidersService.featured_providers(request),
@@ -32,7 +32,7 @@ class MainHomeView(APIView):
             "events": EventsService.home_events(request)
         }
 
-        # cache.set(cache_key, data, timeout=60)
+        cache.set(cache_key, data, timeout=60)
         return Response(data)
 
 
