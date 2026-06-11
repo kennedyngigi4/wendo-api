@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from apps._core_utils.helpers.cache_utils import GlobalCache
 from apps.blogs.models import Blog, BlogCategory
-from apps.blogs.serializers import BlogCategorySerializer, BlogHomeSerializer
+from apps.blogs.serializers import BlogCategorySerializer, BlogDetailSerializer, BlogHomeSerializer
 
 # Create your views here.
 
@@ -29,6 +29,14 @@ class AllBlogsView(APIView):
         cache.set(cache_key, data, timeout=GlobalCache().DEFAULT_TIMEOUT)
 
         return Response(data)
+
+
+
+
+class BlogRetrieveView(generics.RetrieveAPIView):
+    serializer_class = BlogDetailSerializer
+    queryset = Blog.objects.select_related("category", "author")
+    lookup_field = "slug"
 
 
 
