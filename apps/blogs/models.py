@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.utils.text import slugify
+from tinymce.models import HTMLField
 
 from apps.accounts.models.models import User
 
@@ -34,8 +35,8 @@ class Blog(models.Model):
     category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, related_name="blog_categories")
 
     image = models.ImageField(upload_to="blogs")
-    exerpt = models.TextField()
-    content = models.TextField()
+    exerpt = HTMLField()
+    content = HTMLField()
     tags = models.TextField(blank=True)
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="blog_author")
