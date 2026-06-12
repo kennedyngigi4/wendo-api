@@ -48,8 +48,9 @@ class EmailService:
         try:
             subject = "Reset Your Wendo Password"
 
+
             html_content = render_to_string(
-                "notifications/password_reset.html",
+                "notifications/reset_password.html",
                 {
                     "fullname": user.fullname,
                     "reset_url": reset_url,
