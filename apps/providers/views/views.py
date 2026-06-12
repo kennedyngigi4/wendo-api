@@ -366,7 +366,7 @@ class WorkingHoursViewset(viewsets.ViewSet):
 
         serializer = BranchOperatingHoursBulkSerializer(data=request.data, context={"branch": branch})
         if serializer.is_valid():
-            serializer.save(professional=user.professional_profile)
+            serializer.save()
 
             GlobalCache().clear_cache(self.CACHE_PREFIX, user.id)
 
