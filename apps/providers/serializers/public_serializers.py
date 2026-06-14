@@ -61,18 +61,25 @@ class ProviderReadSerializer(serializers.ModelSerializer):
 
 
 class ProviderBranchCardSerializer(serializers.ModelSerializer):
+   
     provider = serializers.CharField(source="provider.name", read_only=True)
+    provider_type = serializers.CharField(source="provider.provider_type", read_only=True)
     banner = serializers.SerializerMethodField()
     is_open = serializers.SerializerMethodField()
     accepts_nhif = serializers.CharField(source="hospital_profile.accepts_nhif", read_only=True)
+    has_ambulance = serializers.CharField(source="hospital_profile.has_ambulance", read_only=True)
     rating = serializers.FloatField(source="avg_rating", read_only=True)
     availability = serializers.SerializerMethodField()
+    ownership_type = serializers.CharField(source="hospital_profile.ownership_type", read_only=True)
+    level = serializers.CharField(source="hospital_profile.level", read_only=True)
+    has_pharmacy = serializers.CharField(source="hospital_profile.has_pharmacy", read_only=True)
 
     class Meta:
         model = ProviderBranch
         fields = [
             "id", "name", "slug", "banner", "location_name", "phone", "is_verified", "provider", 
-            "is_open", "accepts_nhif", "rating", "availability"
+            "is_open", "accepts_nhif", "rating", "availability", "provider_type", "has_ambulance",
+            "ownership_type", "level", "has_pharmacy"
         ]
 
     def get_banner(self, obj):
@@ -105,8 +112,8 @@ class ProviderBranchCardSerializer(serializers.ModelSerializer):
 
     def get_availability(self, obj):
 
-        now = timezone.now()
-        current_day = now.isoweekday()
+        now = timezone.localtime(timezone.now())
+        current_day = now.weekday()
         current_time = now.time()
 
         today_schedule = obj.operating_hours.filter(

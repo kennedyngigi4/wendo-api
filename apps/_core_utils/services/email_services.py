@@ -80,7 +80,7 @@ class EmailService:
 
             email.send(fail_silently=False)
 
-            print("PASSWORD RESET EMAIL SENT")
+            
 
         except Exception as e:
             print("EMAIL ERROR:", str(e))
