@@ -11,6 +11,7 @@ class ServiceCategory(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
+    icon = models.ImageField(upload_to="services/", null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -29,7 +30,7 @@ class Service(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 
-    icon = models.ImageField(upload_to="services/")
+    icon = models.ImageField(upload_to="services/", null=True, blank=True)
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
 
@@ -92,19 +93,32 @@ class Specialty(models.Model):
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4, unique=True)
 
-    name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+
+    profession = models.ForeignKey("professionals.ProfessionalType", on_delete=models.SET_NULL, null=True)
     
 
     def save(self, *args, **kwargs):
 
         if not self.slug:
-            self.slug = slugify(f"{self.name}")
+            self.slug = slugify(f"{self.name}-{self.profession.name}")
 
         super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["name"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "profession"],
+                name="unique_specialty_per_profession"
+            ),
+            models.UniqueConstraint(
+                fields=["slug", "profession"],
+                name="unique_specialty_slug_per_profession"
+            )
+        ]
 
 
     def __str__(self):
