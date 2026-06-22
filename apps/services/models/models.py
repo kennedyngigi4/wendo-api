@@ -136,7 +136,7 @@ class ServiceOffering(models.Model):
     professional = models.ForeignKey("professionals.Professional", on_delete=models.CASCADE, null=True, blank=True, related_name="professional_services")
     
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name="services_offerings")
-    specialties = models.ManyToManyField("services.Specialty", blank=True)
+    service_category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=True, related_name="service_categories")
 
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     description = models.TextField(blank=True)

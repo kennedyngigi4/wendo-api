@@ -6,7 +6,7 @@ class ServiceCategoryReadSearializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceCategory
         fields = [
-            "id", "name", "slug",
+            "id", "name", "slug", "icon"
         ]
 
 
@@ -42,7 +42,7 @@ class ServiceOfferingWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceOffering
         fields = [
-            "provider", "branch", "professional", "service", "specialties", "price", 
+            "provider", "branch", "professional", "service", "service_category", "price", 
             "description", "is_available"
         ]
 
@@ -63,6 +63,6 @@ class ServiceOfferingReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceOffering
         fields = [
-            "id", "provider", "branch", "professional", "service", "service_name", "specialties", "price", 
+            "id", "provider", "branch", "professional", "service", "service_name", "service_category", "price", 
             "description", "is_available"
         ]

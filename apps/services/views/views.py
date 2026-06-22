@@ -16,11 +16,36 @@ from apps.services.serializers.serializers import ServiceCategoryReadSearializer
 
 
 # Create your views here.
+class AllServiceCategoryView(APIView):
+    def get(self, request):
+
+        cache_key = GlobalCache.get_list_public_key("service_categories")
+        cached_data = cache.get(cache_key)
+
+        if cached_data is not None:
+            return Response(cached_data)
+
+        queryset = ServiceCategory.objects.all().order_by("name")
+        serializer = ServiceCategoryReadSearializer(queryset, many=True)
+
+        cache.set(cache_key, serializer.data, GlobalCache.DEFAULT_TIMEOUT)
+        return Response(serializer.data)
+
 
 class AllServicesView(APIView):
+
     def get(self, request):
+
+        cache_key = GlobalCache.get_list_public_key("top_services")
+        cached_data = cache.get(cache_key)
+
+        if cached_data is not None:
+            return Response(cached_data)
+
         queryset = Service.objects.all().order_by("name")
         serializer = ServiceReadSearializer(queryset, many=True)
+
+        cache.set(cache_key, serializer.data, GlobalCache.DEFAULT_TIMEOUT)
         return Response(serializer.data)
 
 
@@ -93,7 +118,7 @@ class ServiceOfferingViewset(viewsets.ViewSet):
                 provider__owner=user
             )
             data["branch"] = branch.id
-            data["provider"] = branch.provider.id  # optional but consistent
+            data["provider"] = branch.provider.id  
 
         elif owner == "provider":
             provider_id = request.query_params.get("provider_id")
