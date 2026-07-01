@@ -48,15 +48,41 @@ class LoginSerializer(serializers.Serializer):
 
 
 
+class PatientProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientProfile
+        fields = [
+            "gender",
+            "dob",
+            "country",
+            "profile_picture",
+        ]
+
+
 class UserSerializer(serializers.ModelSerializer):
+    patientprofile = PatientProfileSerializer(required=False)
 
     class Meta:
         model = User
         fields = [
-            "id", "email", "fullname", "phone", "role"
+            "id", "email", "fullname", "phone", "role", "patientprofile"
         ]
 
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop("patientprofile", None)
 
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if profile_data:
+            profile, _ = PatientProfile.objects.get_or_create(user=instance)
+
+            for attr, value in profile_data.items():
+                setattr(profile, attr, value)
+            profile.save()
+
+        return instance
 
 
 class ForgotPasswordSerializer(serializers.Serializer):

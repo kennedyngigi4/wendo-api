@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 from apps.reviews.models.models import Review
-from apps.reviews.serializers.serializers import ReviewReadSerializer, ReviewWriteSerializer
+from apps.reviews.serializers.serializers import ReviewReadSerializer, PatientReviewListSerializer, ReviewWriteSerializer
 
 # Create your views here.
 
@@ -31,7 +31,14 @@ class PatientReviewView(viewsets.ViewSet):
     def list(self, request):
 
         user = self.request.user
+        queryset = Review.objects.filter(
+            created_by=user
+        ).select_related(
+            "provider_branch", "professional"
+        ).order_by("-created_at")
         
+        data = PatientReviewListSerializer(queryset, many=True).data
+        return Response(data)
 
 
 

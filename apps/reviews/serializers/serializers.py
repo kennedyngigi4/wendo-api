@@ -37,6 +37,18 @@ class ReviewWriteSerializer(serializers.ModelSerializer):
 
         review.save()
         return review
+    
+
+class PatientReviewListSerializer(serializers.ModelSerializer):
+
+    provider_branch = serializers.CharField(source="provider_branch.name", read_only=True)
+    professional = serializers.CharField(source="professional.name", read_only=True)
+
+    class Meta:
+        model = Review
+        fields = [
+            "id", "rating", "comment", "created_at", "provider_branch", "professional"
+        ]
 
 
 class ReviewReadSerializer(serializers.ModelSerializer):

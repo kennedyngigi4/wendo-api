@@ -5,10 +5,11 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from rest_framework import status, generics
+from rest_framework import status, generics, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework.permissions import IsAuthenticated
 
 from apps._core_utils.services.email_services import EmailService
 from apps.accounts.models.models import User
@@ -38,8 +39,7 @@ class RegisterView(APIView):
                 "success": True,
                 "message": "Account created successfully"
             }, status=status.HTTP_201_CREATED)
-
-        
+  
 
 class LoginThrottle(AnonRateThrottle):
     rate = "5/min"
@@ -64,7 +64,6 @@ class LoginView(APIView):
         }, status=status.HTTP_200_OK)
         
         
-
 class ForgotPasswordView(APIView):
 
     def post(self, request):
@@ -98,7 +97,6 @@ class ForgotPasswordView(APIView):
             "success": True, 
             "message": "If an account exists, a reset link has been sent."
         }, status=status.HTTP_200_OK)
-
 
 
 class ResetPasswordView(APIView):
@@ -141,6 +139,33 @@ class ResetPasswordView(APIView):
             "message": "Password reset successfully."
         }, status=status.HTTP_200_OK)
 
+
+
+class ProfileView(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request):
+        serializer = UserSerializer(self.request.user)
+        return Response(serializer.data)
+
+    def partial_update(self, request):
+
+        serializer = UserSerializer(self.request.user, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
+
+    def destroy(self, request):
+    
+        user = self.request.user
+        user.delete()
+
+        return Response(
+            {"detail": "Account deleted successfully."},
+            status=status.HTTP_204_NO_CONTENT
+        )
 
 
 
