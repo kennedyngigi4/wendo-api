@@ -8,7 +8,9 @@ from rest_framework.exceptions import ValidationError
 
 from apps.accounts.permissions import IsProvider
 from apps.bookings.models.models import Booking
-from apps.bookings.serializers.serializers import BookingCardSerializer, BookingWriteSerializer
+from apps.bookings.serializers.serializers import (
+    BookingCardSerializer, BookingWriteSerializer, BookingPatientReadSerializer
+)
 
 
 
@@ -20,17 +22,31 @@ class PatientBookingsViewset(viewsets.ViewSet):
         User bookings views i.e create, list, edit, delete
     """
 
+    permission_classes = [IsAuthenticated]
+
     def create(self, request):
-
-        print(request.data)
+        
         serializer = BookingWriteSerializer(data=request.data)
-
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=self.request.user)
             return Response({ "success": True, "message": "Booking successful"}, status=status.HTTP_201_CREATED)
         
-        print(serializer.errors)
+
         return Response({ "success": False, "message": "A server error occured"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)        
+
+
+    def list(self, request):
+        user = self.request.user
+        
+        queryset = Booking.objects.filter(
+            user=user
+        ).select_related(
+            "professional", "provider", "branch"
+        ).order_by("-created_at")
+
+        data = BookingPatientReadSerializer(queryset, many=True).data
+        return Response({ "success": True, "data": data}, status=status.HTTP_200_OK)
+    
 
     
 

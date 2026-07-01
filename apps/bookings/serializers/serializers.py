@@ -41,4 +41,19 @@ class BookingCardSerializer(serializers.ModelSerializer):
 
 
 
+class BookingPatientReadSerializer(serializers.ModelSerializer):
+
+    service = ServiceOfferingCardReadSerializer(read_only=True)
+    branch_name = serializers.CharField(source="branch.name", read_only=True)
+    provider_name = serializers.CharField(source="provider.name", read_only=True)
+    professional_name = serializers.CharField(source="professional.name", read_only=True)
+
+    class Meta:
+        model = Booking
+        fields = [
+            "id", "appointment_date", "appointment_time", "status", "service", "created_at",
+            "branch_name", "provider_name", "professional_name",
+        ]
+
+
 

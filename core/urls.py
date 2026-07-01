@@ -26,6 +26,8 @@ urlpatterns += [
 
     path( "v1/events/", include("apps.events.urls.urls")),
 
+    path("v1/reviews/", include("apps.reviews.urls.urls")),
+
     path("v1/notifications/", include("apps.notifications.urls")),
 ]
 
