@@ -155,7 +155,7 @@ class ProfileView(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(serializer.data)
+        return Response({ "success": True, "data":  serializer.data}, status=status.HTTP_202_ACCEPTED)
 
     def destroy(self, request):
     

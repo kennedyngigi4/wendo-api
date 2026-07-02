@@ -60,12 +60,19 @@ class PatientProfileSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    patientprofile = PatientProfileSerializer(required=False)
+
+    gender = serializers.CharField(source="patientprofile.gender")
+    dob = serializers.DateField(source="patientprofile.dob")
+    country = serializers.CharField(source="patientprofile.country")
+    profile_picture = serializers.ImageField(
+        source="patientprofile.profile_picture",
+        required=False
+    )
 
     class Meta:
         model = User
         fields = [
-            "id", "email", "fullname", "phone", "role", "patientprofile"
+            "id", "email", "fullname", "phone", "role", "gender", "dob", "country", "profile_picture"
         ]
 
     def update(self, instance, validated_data):

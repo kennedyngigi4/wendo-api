@@ -93,7 +93,7 @@ class ProviderBranchCardSerializer(serializers.ModelSerializer):
 
     def get_is_open(self, obj):
         now = timezone.localtime(timezone.now())
-        current_day = now.weekday()
+        current_day = now.weekday() + 1
         current_time = now.time()
 
         hours = obj.operating_hours.filter(day_of_week=current_day).first()
@@ -113,7 +113,7 @@ class ProviderBranchCardSerializer(serializers.ModelSerializer):
     def get_availability(self, obj):
 
         now = timezone.localtime(timezone.now())
-        current_day = now.weekday()
+        current_day = now.weekday() + 1
         current_time = now.time()
 
         today_schedule = obj.operating_hours.filter(
