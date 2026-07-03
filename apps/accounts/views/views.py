@@ -19,26 +19,25 @@ from apps.accounts.serializers.serializers import *
 
 
 # Create your views here.
-
 class RegisterView(APIView):
-
     def post(self, request):
-        
         serializer = RegisterSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            user = serializer.save()
+        serializer.is_valid(raise_exception=True)
 
-            try:
-                EmailService.send_welcome_email(user)
-            except Exception as e:
-                print("EMAIL ERROR:", str(e))
-                traceback.print_exc()
+        user = serializer.save()
+        try:
+            EmailService.send_welcome_email(user)
+        except Exception as e:
+            print("EMAIL ERROR:", str(e))
+            traceback.print_exc()
 
-            return Response({
+        return Response(
+            {
                 "success": True,
-                "message": "Account created successfully"
-            }, status=status.HTTP_201_CREATED)
+                "message": "Account created successfully",
+            },
+            status=status.HTTP_201_CREATED,
+        )
   
 
 class LoginThrottle(AnonRateThrottle):
