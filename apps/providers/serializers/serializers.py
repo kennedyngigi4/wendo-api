@@ -62,24 +62,6 @@ class ProviderOwnerListSerializer(serializers.ModelSerializer):
         return None
 
 
-class ProviderBranchOwnerWriteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProviderBranch
-        fields = [
-            "provider", "name", "email", "phone", "emergency_phone", "location_name", "latitude", "longitude", "is_main_branch"
-        ]
-
-
-class ProviderBranchOwnerListSerializer(serializers.ModelSerializer):
-    provider = serializers.CharField(source="provider.name", read_only=True)
-    class Meta:
-        model = ProviderBranch
-        fields = [
-            "id", "provider", "name", "phone","location_name", "latitude", "longitude", "is_main_branch"
-        ]
-
-
-
 # DEFAULT DASHBOARD SERIALIZERS
 class DefaultDashBranchSerializer(serializers.ModelSerializer):
     class Meta:
@@ -99,13 +81,13 @@ class DefaultDashProviderSerializer(serializers.ModelSerializer):
             "id", "name", "logo"
         ]
 
-
     def get_logo(self, obj):
         request = self.context.get("request")
         if not obj.logo:
             return None
         return request.build_absolute_uri(obj.logo.url)
     
+
 
 class DefaultDashProfessionalSerializer(serializers.ModelSerializer):
     professional_type = serializers.CharField(source="professional_type.name", read_only=True)

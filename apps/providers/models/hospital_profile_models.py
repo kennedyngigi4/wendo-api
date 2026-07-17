@@ -53,7 +53,7 @@ class HospitalProfile(models.Model):
 
     branch = models.OneToOneField(ProviderBranch, on_delete=models.CASCADE, related_name="hospital_profile")
 
-    ownership_type = models.CharField(max_length=20, choices=OWNERSHIP_TYPE)
+    ownership_type = models.CharField(max_length=20, choices=OWNERSHIP_TYPE, blank=True)
     level = models.CharField(max_length=10, choices=LEVEL, blank=True)
     accepts_nhif = models.BooleanField(default=False)
     year_established = models.IntegerField(null=True, blank=True)
@@ -66,6 +66,13 @@ class HospitalProfile(models.Model):
     has_ambulance = models.BooleanField(default=False)
 
     trust_reasons = ArrayField(models.CharField(max_length=100), default=list, blank=True )
+
+    facebook = models.URLField(max_length=500, null=True, blank=True)
+    tiktok = models.URLField(max_length=500, null=True, blank=True)
+    instagram = models.URLField(max_length=500, null=True, blank=True)
+    linkedin = models.URLField(max_length=500, null=True, blank=True)
+    youtube = models.URLField(max_length=500, null=True, blank=True)
+    twitter_x = models.URLField(max_length=500, null=True, blank=True)
 
 
     def __str__(self):

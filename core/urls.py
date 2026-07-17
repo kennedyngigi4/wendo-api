@@ -19,8 +19,7 @@ urlpatterns += [
 
     path("v1/professionals/", include("apps.professionals.urls")),
 
-    path("v1/providers/", include("apps.providers.urls.urls")),
-    path("v1/providers/public/", include("apps.providers.urls.public_urls")),
+    
 
     path( "v1/services/", include("apps.services.urls.urls")),
 
@@ -29,6 +28,12 @@ urlpatterns += [
     path("v1/reviews/", include("apps.reviews.urls.urls")),
 
     path("v1/notifications/", include("apps.notifications.urls")),
+]
+
+urlpatterns += [
+    path("v1/providers/", include("apps.providers.urls.urls")),
+    path("v1/providers/branch/", include("apps.providers.urls.branch_urls")),
+    path("v1/providers/public/", include("apps.providers.urls.public_urls")),
 ]
 
 

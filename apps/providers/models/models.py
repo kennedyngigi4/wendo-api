@@ -67,8 +67,10 @@ class ProviderBranch(models.Model):
     emergency_phone = models.CharField(max_length=20, null=True, blank=True)
 
     email = models.EmailField(blank=True)
+    bookings_email = models.EmailField(blank=True, null=True)
 
     location_name = models.CharField(max_length=255)
+    building_floor = models.CharField(max_length=255, null=True, blank=True)
     latitude = models.DecimalField(max_digits=15, decimal_places=12, null=True, blank=True)
     longitude = models.DecimalField(max_digits=15, decimal_places=12, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True)

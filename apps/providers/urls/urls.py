@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r"organizations", OrganizationsView, basename="organizations")
-router.register(r"branches", BranchesViewSet, basename="branches")
+# router.register(r"branches", BranchesViewSet, basename="branches")
 router.register(r"branch_specialists", SpecialistsViewset, basename="branch_specialists")
 router.register(r"branch_clinics", ClinicSessionsViewset, basename="branch_clinics")
 router.register(r"subscriptions", SubscriptionsView, basename="subscriptions")

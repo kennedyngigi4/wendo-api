@@ -17,7 +17,10 @@ from apps.professionals.models.models import Professional
 from apps.providers.serializers.serializers import *
 from apps.bookings.models.models import Booking
 from apps.providers.serializers.serializers import *
+
 from apps.providers.services.providers_services import ProvidersService
+from apps.providers.services.branch_service import BranchService
+
 from apps.subscriptions.services.services import *
 from apps.providers.serializers.hospital_serializers import HospitalProfileReadSerializer, HospitalProfileWriteSerializer
 
@@ -104,36 +107,7 @@ class OrganizationsView(viewsets.ViewSet):
         pass
 
 
-class BranchesViewSet(viewsets.ViewSet):
 
-    permission_classes = [IsAuthenticated, IsProvider]
-
-    def create(self, request):
-        user = self.request.user
-        serializer = ProviderBranchOwnerWriteSerializer(data=request.data)
-        if serializer.is_valid():
-            branch = serializer.save()
-            return Response({ "success": True, "message": "Branch created.", "id": branch.id}, status=status.HTTP_201_CREATED)
-        
-        print(serializer.errors)
-        return Response({ "success": False, "message": "Branch creation failed."}, status=status.HTTP_400_BAD_REQUEST)
-
-
-    def list(self, request):
-        user = self.request.user
-        queryset = ProviderBranch.objects.filter(provider__owner=user)
-        serializer = ProviderBranchOwnerListSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-
-    def retrieve(self, request, pk=None):
-        pass
-
-    def partial_update(self, request, pk=None):
-        pass
-
-    def destroy(self, request, pk=None):
-        pass
 
 
 class SubscriptionsView(viewsets.ViewSet):

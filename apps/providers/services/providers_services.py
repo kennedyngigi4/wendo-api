@@ -81,6 +81,7 @@ class ProvidersService:
             branch__provider__owner=user
         ).count()
 
+
         return {
             "total_companies": total_companies,
             "total_branches": total_branches,
